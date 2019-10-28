@@ -3,7 +3,6 @@ const uuid = require('uuid/v4')
 const authService = require('app/modules/auth')
 const userService = require('app/modules/user')
 const notesService = require('app/modules/notes')
-const { Schema } = require('mongoose')
 
 class MockData {
 
