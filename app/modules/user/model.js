@@ -1,4 +1,5 @@
 const { Model } = require('app/modules/common')
+const { ObjectId } = require('mongoose').Schema.Types
 
 class UserModel extends Model {
 
@@ -21,7 +22,11 @@ class UserModel extends Model {
         index: {
           unique: true
         }
-      }
+      },
+      notes: [{
+        type: ObjectId, 
+        ref: 'Note'
+      }]
     }
   }
 }

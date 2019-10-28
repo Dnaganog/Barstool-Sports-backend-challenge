@@ -22,6 +22,18 @@ class CommonAuth {
     req.userId = auth.user
   }
 
+  async requiresLoginAndStoresUser(req, res) {
+    const token = parseAuthToken(req)
+    if (!token) throw new UnauthorizedError()
+
+    const auth = await authService.findOne({ token }, '_id user')
+    if (!auth) throw new UnauthorizedError()
+    res.authStorage = auth;
+
+    req.authId = auth.id
+    req.userId = auth.user
+  }
+
   /**
    * Requires a valid auth token and logged in user
    * must be the same as the user id in the url

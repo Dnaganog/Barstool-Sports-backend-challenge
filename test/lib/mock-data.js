@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs')
 const uuid = require('uuid/v4')
 const authService = require('app/modules/auth')
 const userService = require('app/modules/user')
+const notesService = require('app/modules/notes')
+const { Schema } = require('mongoose')
 
 class MockData {
 
@@ -41,13 +43,28 @@ class MockData {
   }
 
   /**
+   * @method mockNote
+   */
+  mockNote(options = {}) {
+    return Object.assign({
+      title: `${uuid()}`,
+      message: `${uuid()}`
+    }, options)
+  }
+
+  /**
    * @method mockUser
    */
-  mockUser(options = {}) {
+  async mockUser(options = {}) {
+    let notes = await Promise.all([
+      notesService.create(this.mockNote()),
+      notesService.create(this.mockNote())
+    ])
     const data = Object.assign({
       email: `${uuid()}@test.com`,
       firstName: 'John',
-      lastName: 'Doe'
+      lastName: 'Doe',
+      notes
     }, options)
     return userService.create(data)
   }
